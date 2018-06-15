@@ -26,7 +26,7 @@ public:
     ModuleSwitch(const std::string& strModulePath);
     virtual ~ModuleSwitch();
 
-    bool Init();
+    virtual bool Init();
 
     virtual bool AnyMessage(
                     std::shared_ptr<neb::SocketChannel> pUpstreamChannel,
