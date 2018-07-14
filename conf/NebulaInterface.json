@@ -40,7 +40,7 @@
     "boot_load":{
         "cmd":[],
         "module":[
-            {"path":"switch", "class":"inter::ModuleSwitch"}
+            {"path":"/switch", "class":"inter::ModuleSwitch"}
          ]
     },
     "//refresh_interval":"刷新Server配置，检查、加载插件动态库时间周期（周期时间长短视服务器忙闲而定）",

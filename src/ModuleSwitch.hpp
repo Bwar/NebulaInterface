@@ -35,6 +35,8 @@ protected:
     void Response(std::shared_ptr<neb::SocketChannel> pUpstreamChannel,
                     const HttpMsg& oInHttpMsg,
                     int iErrno, const std::string& strErrMsg);
+    void ResponseOptions(
+            std::shared_ptr<neb::SocketChannel> pUpstreamChannel, const HttpMsg& oInHttpMsg);
 
 private:
     std::map<std::string, neb::CJsonObject*> m_mapModuleConf;

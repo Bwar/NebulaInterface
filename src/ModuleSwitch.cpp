@@ -104,6 +104,12 @@ bool ModuleSwitch::AnyMessage(
                 std::shared_ptr<neb::SocketChannel> pUpstreamChannel,
                 const HttpMsg& oInHttpMsg)
 {
+    if (HTTP_OPTIONS == oInHttpMsg.method())
+    {
+        LOG4_TRACE("receive an OPTIONS");
+        ResponseOptions(pUpstreamChannel, oInHttpMsg);
+        return(true);
+    }
     auto module_conf_iter = m_mapModuleConf.find(oInHttpMsg.path());
     if (module_conf_iter == m_mapModuleConf.end())
     {
@@ -143,6 +149,29 @@ void ModuleSwitch::Response(std::shared_ptr<neb::SocketChannel> pUpstreamChannel
         oResponseData.Add("data", neb::CJsonObject("[]"));
     }
     oHttpMsg.set_body(oResponseData.ToFormattedString());
+    SendTo(pUpstreamChannel, oHttpMsg);
+}
+
+void ModuleSwitch::ResponseOptions(std::shared_ptr<neb::SocketChannel> pUpstreamChannel, const HttpMsg& oInHttpMsg)
+{
+    LOG4_DEBUG("%s()", __FUNCTION__);
+    HttpMsg oHttpMsg;
+    oHttpMsg.set_type(HTTP_RESPONSE);
+    oHttpMsg.set_status_code(200);
+    oHttpMsg.set_http_major(oInHttpMsg.http_major());
+    oHttpMsg.set_http_minor(oInHttpMsg.http_minor());
+    HttpMsg::Header* pHeader = oHttpMsg.add_headers();
+    pHeader->set_header_name("Access-Control-Allow-Origin");
+    pHeader->set_header_value("*");
+    pHeader = oHttpMsg.add_headers();
+    pHeader->set_header_name("Access-Control-Allow-Headers");
+    pHeader->set_header_value("Origin, Content-Type, Cookie, Accept, multipart/form-data, application/json, token,x-token,Access-Token,X-CSRF-TOKEN, Accept, Authorization, X-XSRF-TOKEN");
+    pHeader = oHttpMsg.add_headers();
+    pHeader->set_header_name("Access-Control-Allow-Methods");
+    pHeader->set_header_value("GET, POST");
+    pHeader = oHttpMsg.add_headers();
+    pHeader->set_header_name("Access-Control-Allow-Credentials");
+    pHeader->set_header_value("true");
     SendTo(pUpstreamChannel, oHttpMsg);
 }
 

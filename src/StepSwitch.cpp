@@ -91,6 +91,18 @@ neb::E_CMD_STATUS StepSwitch::CallbackSwitch(
     oHttpMsg.set_status_code(200);
     oHttpMsg.set_http_major(m_oInHttpMsg.http_major());
     oHttpMsg.set_http_minor(m_oInHttpMsg.http_minor());
+    HttpMsg::Header* pHeader = oHttpMsg.add_headers();
+    pHeader->set_header_name("Access-Control-Allow-Origin");
+    pHeader->set_header_value("*");
+    pHeader = oHttpMsg.add_headers();
+    pHeader->set_header_name("Access-Control-Allow-Headers");
+    pHeader->set_header_value("Origin, Content-Type, Cookie, Accept, multipart/form-data, application/json, token,x-token,Access-Token,X-CSRF-TOKEN, Accept, Authorization, X-XSRF-TOKEN");
+    pHeader = oHttpMsg.add_headers();
+    pHeader->set_header_name("Access-Control-Allow-Methods");
+    pHeader->set_header_value("GET, POST");
+    pHeader = oHttpMsg.add_headers();
+    pHeader->set_header_name("Access-Control-Allow-Credentials");
+    pHeader->set_header_value("true");
     oHttpMsg.set_body(oInMsgBody.data());
     SendTo(m_pRequestUpstreamChannel, oHttpMsg);
     return (neb::CMD_STATUS_COMPLETED);
