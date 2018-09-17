@@ -20,8 +20,8 @@ ModuleSwitch::ModuleSwitch(const std::string& strModulePath)
 
 ModuleSwitch::~ModuleSwitch()
 {
-    for (std::map<std::string, neb::CJsonObject*>::iterator iter = m_mapModuleConf.begin();
-                    iter != m_mapModuleConf.end(); ++iter)
+    for (auto iter = m_mapModuleConf.begin();
+             iter != m_mapModuleConf.end(); ++iter)
     {
         if (iter->second != NULL)
         {
@@ -160,18 +160,11 @@ void ModuleSwitch::ResponseOptions(std::shared_ptr<neb::SocketChannel> pUpstream
     oHttpMsg.set_status_code(200);
     oHttpMsg.set_http_major(oInHttpMsg.http_major());
     oHttpMsg.set_http_minor(oInHttpMsg.http_minor());
-    HttpMsg::Header* pHeader = oHttpMsg.add_headers();
-    pHeader->set_header_name("Access-Control-Allow-Origin");
-    pHeader->set_header_value("*");
-    pHeader = oHttpMsg.add_headers();
-    pHeader->set_header_name("Access-Control-Allow-Headers");
-    pHeader->set_header_value("Origin, Content-Type, Cookie, Accept, multipart/form-data, application/json, token,x-token,Access-Token,X-CSRF-TOKEN, Accept, Authorization, X-XSRF-TOKEN");
-    pHeader = oHttpMsg.add_headers();
-    pHeader->set_header_name("Access-Control-Allow-Methods");
-    pHeader->set_header_value("GET, POST");
-    pHeader = oHttpMsg.add_headers();
-    pHeader->set_header_name("Access-Control-Allow-Credentials");
-    pHeader->set_header_value("true");
+    oHttpMsg.mutable_headers()->insert(google::protobuf::MapPair<std::string, std::string>("Connection", "keep-alive"));
+    oHttpMsg.mutable_headers()->insert(google::protobuf::MapPair<std::string, std::string>("Access-Control-Allow-Origin", "*"));
+    oHttpMsg.mutable_headers()->insert(google::protobuf::MapPair<std::string, std::string>("Access-Control-Allow-Headers", "Origin, Content-Type, Cookie, Accept"));
+    oHttpMsg.mutable_headers()->insert(google::protobuf::MapPair<std::string, std::string>("Access-Control-Allow-Methods", "GET, POST"));
+    oHttpMsg.mutable_headers()->insert(google::protobuf::MapPair<std::string, std::string>("Access-Control-Allow-Credentials", "true"));
     SendTo(pUpstreamChannel, oHttpMsg);
 }
 

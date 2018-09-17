@@ -11,7 +11,7 @@
 #define SRC_MODULESWITCH_MODULESWITCH_HPP_
 
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <Error.hpp>
 #include <util/json/CJsonObject.hpp>
 #include <actor/cmd/Module.hpp>
@@ -39,7 +39,7 @@ protected:
             std::shared_ptr<neb::SocketChannel> pUpstreamChannel, const HttpMsg& oInHttpMsg);
 
 private:
-    std::map<std::string, neb::CJsonObject*> m_mapModuleConf;
+    std::unordered_map<std::string, neb::CJsonObject*> m_mapModuleConf;
 
 public:
     std::shared_ptr<StepSwitch> pStepSwitch;
