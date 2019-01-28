@@ -8,7 +8,7 @@
 		},
 		{
 			"node_type":["OSSI","INTERFACE"],
-			"url_path":"/hello",
+			"url_path":"/hello_nebula",
 			"cmd":65531
 		}
 	]

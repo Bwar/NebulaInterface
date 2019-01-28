@@ -119,6 +119,7 @@ bool ModuleSwitch::AnyMessage(
         oOutHttpMsg.set_status_code(404);
         oOutHttpMsg.set_http_major(oInHttpMsg.http_major());
         oOutHttpMsg.set_http_minor(oInHttpMsg.http_minor());
+        SendTo(pUpstreamChannel, oOutHttpMsg);
         return(false);
     }
 
