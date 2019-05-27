@@ -72,12 +72,12 @@ neb::E_CMD_STATUS StepSwitch::EmitSwitch()
         }
         else
         {
-            SendPolling("LOGIC", uiCmd, GetSequence(), m_oSwitchMsgBody);
+            SendRoundRobin("LOGIC", uiCmd, GetSequence(), m_oSwitchMsgBody);
         }
     }
     else
     {
-        SendPolling("LOGIC", uiCmd, GetSequence(), m_oSwitchMsgBody);
+        SendRoundRobin("LOGIC", uiCmd, GetSequence(), m_oSwitchMsgBody);
     }
     return (neb::CMD_STATUS_RUNNING);
 }
